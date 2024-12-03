@@ -6,28 +6,28 @@ import json
 
 # Fungsi untuk mengambil data cuaca
 def fetch_weather_data():
-    api_key = "your_api_key"
+    api_key = "182e6c0694544665b52105141240312"
     city = "Jakarta"
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}"
+    url = f"http://api.weatherapi.com/v1/current.json?key{api_key}&q={city}"
     response = requests.get(url)
     data = response.json()
     
     # Simpan ke file sementara
-    with open('tmp/weather_data.json', 'w') as f:
+    with open('/tmp/weather_data.json', 'w') as f:
         json.dump(data, f)
 
 # Fungsi untuk membersihkan data
 def clean_weather_data():
-    with open('tmp/weather_data.json', 'r') as f:
+    with open('/tmp/weather_data.json', 'r') as f:
         data = json.load(f)
     cleaned_data = {
-        "city": data.get("name"),
-        "temperature": data["main"]["temp"],
-        "weather": data["weather"][0]["description"]
+        "city": data["location"]["name"],
+        "temperature": data["current"]["temp_c"],
+        "weather": data["current"][0]["description"]
     }
     
     # Simpan data bersih
-    with open('tmp/cleaned_weather_data.json', 'w') as f:
+    with open('/tmp/cleaned_weather_data.json', 'w') as f:
         json.dump(cleaned_data, f)
 
 # Konfigurasi DAG
