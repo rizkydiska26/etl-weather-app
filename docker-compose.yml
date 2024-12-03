@@ -1,0 +1,22 @@
+services:
+  airflow:
+    build: .
+    image: airflow-etl
+    container_name: airflow-container
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./dags:/opt/airflow/dags
+    environment:
+      - AIRFLOW_UID=50000
+    command: >
+      bash -c "
+      airflow db init &&
+      airflow users create \
+      --username admin \
+      --firstname Admin \
+      --lastname User \
+      --role Admin \
+      --email admin@example.com \
+      --password admin123 &&
+      airflow webserver"
